@@ -288,10 +288,21 @@ if [ "$dl_path" = "" ] ; then
         echo "SDK could not be set up. Relocate script unable to find ld-linux.so. Abort!"
         exit 1
 fi
+
+FILEVER=$(file --version | head -n 1 | cut -d - -f 2)
+
+if [ $(echo "$FILEVER > 5.32" | bc -l) = "1" ]
+then
 native_executable_files=$($SUDO_EXEC find $native_sysroot -type f \
         \( -perm -0100 -o -perm -0010 -o -perm -0001 \) \
 	-exec sh -c "file {} | grep -P ': ELF 64-bit LSB (shared object|pie executable|executable), x86-64, .*, interpreter' > /dev/null" \; \
         -printf "'%h/%f' ")
+else
+native_executable_files=$($SUDO_EXEC find $native_sysroot -type f \
+        \( -perm -0100 -o -perm -0010 -o -perm -0001 \) \
+        -exec sh -c "file \"{}\" | grep -P ': ELF 64-bit LSB (shared object|pie executable|executable), x86-64, .* \(uses shared libs\)' > /dev/null" \; \
+        -printf "'%h/%f' ")
+fi
 
 native_elf_files=$($SUDO_EXEC find $native_sysroot -type f \
 	-exec sh -c "file {} | grep -P ': ELF 64-bit LSB (shared object|pie executable|executable), x86-64' > /dev/null" \; \
