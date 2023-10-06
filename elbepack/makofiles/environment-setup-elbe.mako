@@ -55,6 +55,7 @@ export PKG_CONFIG_SYSROOT_DIR=$SDKTARGETSYSROOT
 export PKG_CONFIG_PATH=$SDKTARGETSYSROOT/usr/lib/${real_multimach_target_sys}/pkgconfig
 export OECORE_NATIVE_SYSROOT="${sdk_path}/sysroots/host"
 export OECORE_TARGET_SYSROOT="$SDKTARGETSYSROOT"
+export GCC_EXEC_PREFIX="${sdk_path}/sysroots/host/usr/bin"
 export CC="${real_multimach_target_sys}-gcc --sysroot=$SDKTARGETSYSROOT"
 export CXX="${real_multimach_target_sys}-g++ --sysroot=$SDKTARGETSYSROOT"
 export CPP="${real_multimach_target_sys}-gcc -E --sysroot=$SDKTARGETSYSROOT"
